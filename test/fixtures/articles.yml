@@ -3,6 +3,7 @@
 one:
   name: MyString
   body: MyText
+  image_url: https://test/image.jpg
 
 two:
   name: MyString

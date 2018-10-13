@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class ArticlesControllerTest < ActionDispatch::IntegrationTest
+  include ActiveJob::TestHelper
+
   setup do
     @article = articles(:one)
   end
@@ -44,5 +46,13 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to articles_url
+  end
+
+  test 'should enqueued AttachImageJob' do
+    assert_enqueued_with(job: AttachImageJob) do
+      post articles_url, params: { article: { body: @article.body,
+                                              name: @article.name,
+                                              image_url: @article.image_url } }
+    end
   end
 end

@@ -28,6 +28,7 @@ class ArticlesController < ApplicationController
 
     respond_to do |format|
       if @article.save
+        AttachImageJob.perform_later(@article.id)
         format.html { redirect_to @article, notice: 'Article was successfully created.' }
         format.json { render :show, status: :created, location: @article }
       else
@@ -69,6 +70,6 @@ class ArticlesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def article_params
-      params.require(:article).permit(:name, :body)
+      params.require(:article).permit(:name, :body, :image_url)
     end
 end
