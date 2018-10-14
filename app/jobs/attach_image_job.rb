@@ -3,7 +3,6 @@ class AttachImageJob < ApplicationJob
 
   def perform(article_id)
     article = Article.find(article_id)
-
-    article.image.attach(io: open(article.image_url), filename: 'image.png')
+    AttachImageService.call(article, ArticleContainer)
   end
 end
